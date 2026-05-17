@@ -1,0 +1,16 @@
+<div class="page-header">
+  <h1>Mis Tareas</h1>
+  <a routerLink="/tasks/new" class="btn-primary">+ Nueva tarea</a>
+</div>
+
+<div class="task-grid">
+  <a *ngFor="let task of tasks" [routerLink]="['/tasks', task.id]" class="task-card">
+    <div class="task-priority priority-{{task.priority}}">{{task.priority}}</div>
+    <h3>{{task.title}}</h3>
+    <p>{{task.description}}</p>
+    <div class="task-footer">
+      <span class="status status-{{task.status.replace(' ', '-')}}">{{task.status}}</span>
+      <span class="due-date">📅 {{task.dueDate}}</span>
+    </div>
+  </a>
+</div>

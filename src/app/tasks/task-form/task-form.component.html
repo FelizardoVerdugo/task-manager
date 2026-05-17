@@ -1,0 +1,50 @@
+<div class="form-container">
+  <a routerLink="/tasks" class="back-link">← Cancelar</a>
+  <h1>Nueva Tarea</h1>
+
+  <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)" class="task-form">
+
+    <div class="form-group">
+      <label for="title">Título *</label>
+      <input id="title" name="title" [(ngModel)]="task.title" required
+             #title="ngModel" [class.invalid]="title.invalid && title.touched"
+             placeholder="Ej: Revisar pull requests">
+      <span class="error" *ngIf="title.invalid && title.touched">El título es obligatorio</span>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descripción</label>
+      <textarea id="description" name="description" [(ngModel)]="task.description"
+                rows="3" placeholder="Describe la tarea..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">Prioridad</label>
+        <select id="priority" name="priority" [(ngModel)]="task.priority">
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Estado</label>
+        <select id="status" name="status" [(ngModel)]="task.status">
+          <option value="pendiente">Pendiente</option>
+          <option value="en progreso">En progreso</option>
+          <option value="completada">Completada</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Fecha límite *</label>
+      <input id="dueDate" name="dueDate" type="date" [(ngModel)]="task.dueDate"
+             required #dueDate="ngModel" [class.invalid]="dueDate.invalid && dueDate.touched">
+      <span class="error" *ngIf="dueDate.invalid && dueDate.touched">La fecha es obligatoria</span>
+    </div>
+
+    <button type="submit" class="btn-primary" [disabled]="taskForm.invalid">Crear Tarea</button>
+  </form>
+</div>

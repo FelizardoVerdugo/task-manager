@@ -1,0 +1,22 @@
+<div *ngIf="task; else notFound" class="detail-container">
+  <a routerLink="/tasks" class="back-link">← Volver a la lista</a>
+  <div class="detail-card">
+    <div class="detail-header">
+      <span class="task-priority priority-{{task.priority}}">{{task.priority}}</span>
+      <span class="status status-{{task.status.replace(' ', '-')}}">{{task.status}}</span>
+    </div>
+    <h1>{{task.title}}</h1>
+    <p class="description">{{task.description}}</p>
+    <div class="detail-meta">
+      <div><strong>Fecha límite:</strong> {{task.dueDate}}</div>
+      <div><strong>Prioridad:</strong> {{task.priority}}</div>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <h2>Tarea no encontrada</h2>
+    <a routerLink="/tasks">← Volver</a>
+  </div>
+</ng-template>
