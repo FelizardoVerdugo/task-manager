@@ -1,50 +1,69 @@
 <div class="form-container">
   <a routerLink="/tasks" class="back-link">← Cancelar</a>
-  <h1>Nueva Tarea</h1>
+  <h1>{{ isEdit ? 'Editar Tarea' : 'Nueva Tarea' }}</h1>
 
-  <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)" class="task-form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="task-form">
 
+    <!-- Título -->
     <div class="form-group">
-      <label for="title">Título *</label>
-      <input id="title" name="title" [(ngModel)]="task.title" required
-             #title="ngModel" [class.invalid]="title.invalid && title.touched"
-             placeholder="Ej: Revisar pull requests">
-      <span class="error" *ngIf="title.invalid && title.touched">El título es obligatorio</span>
+      <label>Título *</label>
+      <input formControlName="title" placeholder="Ej: Revisar pull requests">
+      <div class="errors" *ngIf="f['title'].invalid && f['title'].touched">
+        <span *ngIf="f['title'].errors?.['required']">El título es obligatorio</span>
+        <span *ngIf="f['title'].errors?.['minlength']">Mínimo 3 caracteres</span>
+        <span *ngIf="f['title'].errors?.['maxlength']">Máximo 80 caracteres</span>
+      </div>
     </div>
 
+    <!-- Descripción -->
     <div class="form-group">
-      <label for="description">Descripción</label>
-      <textarea id="description" name="description" [(ngModel)]="task.description"
-                rows="3" placeholder="Describe la tarea..."></textarea>
+      <label>Descripción *</label>
+      <textarea formControlName="description" rows="3" placeholder="Describe la tarea..."></textarea>
+      <div class="errors" *ngIf="f['description'].invalid && f['description'].touched">
+        <span *ngIf="f['description'].errors?.['required']">La descripción es obligatoria</span>
+        <span *ngIf="f['description'].errors?.['minlength']">Mínimo 10 caracteres</span>
+      </div>
     </div>
 
+    <!-- Categoría y Prioridad -->
     <div class="form-row">
       <div class="form-group">
-        <label for="priority">Prioridad</label>
-        <select id="priority" name="priority" [(ngModel)]="task.priority">
-          <option value="baja">Baja</option>
-          <option value="media">Media</option>
-          <option value="alta">Alta</option>
+        <label>Categoría</label>
+        <select formControlName="category">
+          <option *ngFor="let c of categories" [value]="c">{{c}}</option>
         </select>
       </div>
-
       <div class="form-group">
-        <label for="status">Estado</label>
-        <select id="status" name="status" [(ngModel)]="task.status">
-          <option value="pendiente">Pendiente</option>
-          <option value="en progreso">En progreso</option>
-          <option value="completada">Completada</option>
+        <label>Prioridad</label>
+        <select formControlName="priority">
+          <option *ngFor="let p of priorities" [value]="p">{{p}}</option>
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="dueDate">Fecha límite *</label>
-      <input id="dueDate" name="dueDate" type="date" [(ngModel)]="task.dueDate"
-             required #dueDate="ngModel" [class.invalid]="dueDate.invalid && dueDate.touched">
-      <span class="error" *ngIf="dueDate.invalid && dueDate.touched">La fecha es obligatoria</span>
+    <!-- Estado y Fecha -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Estado</label>
+        <select formControlName="status">
+          <option *ngFor="let s of statuses" [value]="s">{{s}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Fecha límite *</label>
+        <input type="date" formControlName="dueDate">
+        <div class="errors" *ngIf="f['dueDate'].invalid && f['dueDate'].touched">
+          <span>La fecha es obligatoria</span>
+        </div>
+      </div>
     </div>
 
-    <button type="submit" class="btn-primary" [disabled]="taskForm.invalid">Crear Tarea</button>
+    <!-- Error global -->
+    <div class="submit-error" *ngIf="submitError">⚠️ {{ submitError }}</div>
+
+    <button type="submit" class="btn-primary" [disabled]="submitting">
+      {{ submitting ? 'Guardando...' : (isEdit ? 'Guardar cambios' : 'Crear tarea') }}
+    </button>
+
   </form>
 </div>

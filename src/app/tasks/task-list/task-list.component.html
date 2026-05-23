@@ -3,14 +3,61 @@
   <a routerLink="/tasks/new" class="btn-primary">+ Nueva tarea</a>
 </div>
 
-<div class="task-grid">
-  <a *ngFor="let task of tasks" [routerLink]="['/tasks', task.id]" class="task-card">
-    <div class="task-priority priority-{{task.priority}}">{{task.priority}}</div>
-    <h3>{{task.title}}</h3>
+<!-- Filtro por categoría -->
+<div class="filter-bar">
+  <label>Filtrar por categoría:</label>
+  <div class="category-tabs">
+    <button *ngFor="let cat of categories"
+      [class.active]="selectedCategory === cat"
+      (click)="selectedCategory = cat; onCategoryChange()">
+      {{ cat }}
+    </button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div *ngIf="taskService.loading()" class="state-box">
+  <div class="spinner"></div>
+  <p>Cargando tareas...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="taskService.error()" class="state-box error-box">
+  <p>⚠️ {{ taskService.error() }}</p>
+  <button class="btn-primary" (click)="taskService.loadAll()">Reintentar</button>
+</div>
+
+<!-- Lista vacía -->
+<div *ngIf="!taskService.loading() && !taskService.error() && taskService.tasks().length === 0" class="state-box">
+  <p>No hay tareas en esta categoría.</p>
+  <a routerLink="/tasks/new" class="btn-primary">Crear primera tarea</a>
+</div>
+
+<!-- Lista de tareas -->
+<div class="task-grid" *ngIf="!taskService.loading() && taskService.tasks().length > 0">
+  <div *ngFor="let task of taskService.tasks()" class="task-card">
+    <div class="task-card-header">
+      <span class="task-priority priority-{{task.priority}}">{{task.priority}}</span>
+      <span class="task-category">{{task.category}}</span>
+    </div>
+    <a [routerLink]="['/tasks', task.id]"><h3>{{task.title}}</h3></a>
     <p>{{task.description}}</p>
     <div class="task-footer">
       <span class="status status-{{task.status.replace(' ', '-')}}">{{task.status}}</span>
       <span class="due-date">📅 {{task.dueDate}}</span>
     </div>
-  </a>
+    <div class="task-actions">
+      <a [routerLink]="['/tasks', task.id, 'edit']" class="btn-edit">✏️ Editar</a>
+      <button class="btn-delete" (click)="confirmDelete(task.id)">🗑️ Eliminar</button>
+    </div>
+  </div>
 </div>
+
+<!-- Diálogo confirmación -->
+<app-confirm-dialog
+  [visible]="showConfirm"
+  title="¿Eliminar tarea?"
+  message="Esta acción no se puede deshacer."
+  (confirmed)="onDeleteConfirmed()"
+  (cancelled)="onDeleteCancelled()">
+</app-confirm-dialog>

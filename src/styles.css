@@ -86,3 +86,44 @@ input.invalid, textarea.invalid { border-color: #f87171; }
 .error { color: #f87171; font-size: 0.78rem; }
 
 .not-found { text-align: center; padding: 4rem; }
+
+/* Filtros */
+.filter-bar { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
+.filter-bar label { color:#64748b; font-size:.85rem; }
+.category-tabs { display:flex; gap:.5rem; flex-wrap:wrap; }
+.category-tabs button { background:#1a1d27; border:1px solid #2d3148; color:#94a3b8;
+  padding:.35rem .9rem; border-radius:20px; cursor:pointer; font-size:.8rem; transition:.2s; }
+.category-tabs button.active { background:#7c6af7; border-color:#7c6af7; color:#fff; }
+.category-tabs button:hover { border-color:#7c6af7; color:#fff; }
+
+/* States */
+.state-box { text-align:center; padding:4rem 2rem; color:#64748b; }
+.state-box p { margin-bottom:1rem; }
+.error-box { color:#f87171; }
+
+/* Spinner */
+.spinner { width:40px; height:40px; border:3px solid #2d3148;
+  border-top-color:#7c6af7; border-radius:50%;
+  animation:spin .8s linear infinite; margin:0 auto 1rem; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Task actions */
+.task-card-header { display:flex; justify-content:space-between; margin-bottom:.5rem; }
+.task-category { font-size:.7rem; background:#1e2535; color:#60a5fa;
+  padding:.2rem .6rem; border-radius:4px; }
+.task-actions { display:flex; gap:.5rem; margin-top:1rem; padding-top:1rem;
+  border-top:1px solid #2d3148; }
+.btn-edit { background:#1e3a2a; color:#4ade80; border:none; padding:.4rem .9rem;
+  border-radius:6px; cursor:pointer; font-size:.8rem; text-decoration:none; }
+.btn-delete { background:#3b1a1a; color:#f87171; border:none; padding:.4rem .9rem;
+  border-radius:6px; cursor:pointer; font-size:.8rem; }
+.btn-edit:hover { background:#166534; }
+.btn-delete:hover { background:#7f1d1d; }
+
+/* Form errors */
+.errors { margin-top:.3rem; }
+.errors span { color:#f87171; font-size:.78rem; display:block; }
+.submit-error { background:#3b1a1a; color:#f87171; padding:.8rem 1rem;
+  border-radius:8px; margin-bottom:1rem; font-size:.9rem; }
+input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border-color:#f87171; }
