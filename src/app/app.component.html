@@ -1,8 +1,15 @@
-<nav>
+<nav *ngIf="auth.isLoggedIn()">
   <span class="brand">⚡ TaskManager</span>
-  <a routerLink="/tasks">Mis Tareas</a>
-  <a routerLink="/tasks/new">+ Nueva Tarea</a>
+  <div class="nav-links">
+    <a routerLink="/tasks">Mis Tareas</a>
+    <a routerLink="/tasks/new">+ Nueva</a>
+  </div>
+  <div class="nav-user">
+    <span class="user-name">👤 {{ auth.currentUser()?.name }}</span>
+    <button class="btn-logout" (click)="auth.logout()">Salir</button>
+  </div>
 </nav>
+
 <main>
   <router-outlet />
 </main>
